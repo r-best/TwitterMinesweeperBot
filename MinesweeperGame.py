@@ -44,7 +44,6 @@ class MinesweeperGame:
         return string
 
     def uncover_surroundings(self, I, J):
-        print("Recurse (" + str(I) + ', ' + str(J) + ')')
         # That thing that happens when you click a 0 tile and it uncovers all the connected 0 tiles
         # and you get a whole bunch of board at once if you're lucky
         self.mines[I][J].visible = True
@@ -55,15 +54,13 @@ class MinesweeperGame:
                         self.uncover_surroundings(i, j)
                     self.mines[i][j].visible = True
 
-    def click_tile(self, i, j):
+    def click_tile(self, j, i):
         self.mines[i-1][j-1].visible = True
         if self.mines[i-1][j-1].count == 'M':
             return False
         else:
             if self.mines[i-1][j-1].count == 0:
-                print("Begin recursion")
                 self.uncover_surroundings(i-1, j-1)
-                print("End recursion")
             return True
 
     def create_new_board(self, num_mines):

@@ -35,12 +35,10 @@ for tweet in tweets:
     reply_mention = '@' + tweet.user.screen_name + ' '
     print(tweet.text.lower())
     if "new game" in tweet.text.lower():
-        print('true')
         saved_games[tweet.user.id_str] = MinesweeperGame()
         saved_games[tweet.user.id_str].__init__()
-        api.update_status(reply_mention + "New game started: \n" + saved_games[tweet.user.id_str].print_board(), in_reply_to_status_id=tweet.id)
+        api.update_status(reply_mention + "New game started:\n" + saved_games[tweet.user.id_str].print_board(), in_reply_to_status_id=tweet.id)
     else:
-        print('false')
         if tweet.user.id_str in saved_games:
             text = tweet.text.lower().split(' ')  # Get text of tweet and split on spaces
             # Get the first two numbers out of the tweet and use them as the matrix coordinates to click on
@@ -54,7 +52,8 @@ for tweet in tweets:
                     break
             if coords.__len__() >= 2:
                 if not saved_games[tweet.user.id_str].click_tile(coords[0], coords[1]):
-                    api.update_status(reply_mention + "Game over! Reply 'New game' to start a new game" + saved_games[tweet.user.id_str].print_board(), in_reply_to_status_id=tweet.id)
+                    api.update_status(reply_mention + "Game over! Reply 'New game' to start a new game\n" + saved_games[tweet.user.id_str].print_board(), in_reply_to_status_id=tweet.id)
+                    del saved_games[tweet.user.id_str]
                 else:
                     api.update_status(reply_mention + '\n' + saved_games[tweet.user.id_str].print_board(), in_reply_to_status_id=tweet.id)
             elif coords.__len__() == 1:
